@@ -28,7 +28,7 @@ const Nav = ({ items }: NavProps): JSX.Element => {
                             return (
                                 <li>
                                     <Link
-                                        to={item.name}
+                                        to={item.name.toLocaleLowerCase()}
                                         className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:p-0"
                                         aria-current="page"
                                     >
