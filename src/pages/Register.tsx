@@ -1,18 +1,26 @@
 import { FormContainer, Input, Button } from "../components"
 import { useState } from "react"
+import register from "../services/auth/register"
 
 const Register = (): JSX.Element => {
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
-    const [email, setEmail] = useState("")
+    const [username, setUsername] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const [confirmPassword, setConfirmPassword] = useState<string>("")
+    const [email, setEmail] = useState<string>("")
+
+    // Trigger the register function when the form is submitted
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const response = await register(username, email, password)
+        console.log(response)
+    }
 
     return (
         <div className="flex justify-center items-center h-screen">
             <FormContainer
                 title="Register"
                 children={
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <Input
                             type="text"
                             name="username"
