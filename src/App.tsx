@@ -1,7 +1,12 @@
 import Router from "./Router"
+import "./assets/styles/index.css"
 
 const App = (): JSX.Element => {
-    return <Router />
+    return (
+        <div className="App">
+            <Router />
+        </div>
+    )
 }
 
 export default App
