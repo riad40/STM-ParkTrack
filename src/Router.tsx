@@ -1,4 +1,4 @@
-import { Home, Login, Register, Dashboard, CreateLog } from "./pages"
+import { Home, Login, Register, Dashboard, CreateLog, UpdateLog } from "./pages"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import RequireAuth from "./components/auth/RequireAuth"
 
@@ -16,6 +16,7 @@ const Router = (): JSX.Element => {
                 </Route>
                 <Route element={<RequireAuth roles={["super admin"]} />}>
                     <Route path="/logs/create" element={<CreateLog />} />
+                    <Route path="/logs/:id/edit" element={<UpdateLog />} />
                 </Route>
             </Routes>
         </BrowserRouter>
