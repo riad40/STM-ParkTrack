@@ -1,5 +1,6 @@
 import { Home, Login, Register, Dashboard } from "./pages"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import RequireAuth from "./components/auth/RequireAuth"
 
 const Router = (): JSX.Element => {
     return (
@@ -8,7 +9,11 @@ const Router = (): JSX.Element => {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route
+                    element={<RequireAuth roles={["user", "super admin"]} />}
+                >
+                    <Route path="/dashboard" element={<Dashboard />} />
+                </Route>
             </Routes>
         </BrowserRouter>
     )

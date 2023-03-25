@@ -9,12 +9,18 @@ export type NavOptions = {
 }[]
 
 export type AuthOptions = {
-    isAuth: boolean
-    user: object
+    user: User
     token: string
 }
 
 export type AuthContextType = {
     auth: AuthOptions
     setAuth: (auth: AuthOptions) => void
+}
+
+export type User = {
+    id: string
+    email: string
+    username: string
+    roles: string[]
 }

@@ -6,9 +6,18 @@ const Dashboard = (): JSX.Element => {
 
     console.log(auth)
 
+    // based on the user role, render the appropriate content
+    if (auth.user?.roles?.includes("super admin")) {
+        return (
+            <div>
+                <h1>Super Admin Dashboard</h1>
+            </div>
+        )
+    }
+
     return (
         <div>
-            <h1>Dashboard</h1>
+            <h1>User Dashboard</h1>
         </div>
     )
 }
