@@ -1,11 +1,25 @@
 import useAuth from "../hooks/useAuth"
 import { Header, Container, Table, Button } from "../components"
-import { HeaderOpions } from "../@types"
+import { HeaderOpions, CarLog } from "../@types"
 import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import getLogs from "../services/logs/getLogs"
 
 const Dashboard = (): JSX.Element => {
     // Get the auth global state
     const { auth } = useAuth()
+
+    // Get the logs
+    const [logs, setLogs] = useState<any>([])
+    useEffect(() => {
+        const getLogsData = async () => {
+            const response = await getLogs()
+            setLogs(response)
+        }
+        getLogsData()
+    }, [])
+
+    console.log(logs)
 
     // based on the user role, render the appropriate content
     if (auth.user?.roles?.includes("super admin")) {
@@ -23,22 +37,33 @@ const Dashboard = (): JSX.Element => {
                             </Link>
                         </div>
                         <Table
-                            data={[
-                                {
-                                    id: 1,
-                                    name: "John Doe",
-                                    email: "something@gmail.com",
+                            data={logs.map((log: any) => {
+                                return {
+                                    _id: log._id,
+                                    licensePlate: log.licensePlate,
+                                    timeIn: log.timeIn,
+                                    timeOut: log.timeOut,
+                                    user: log.user.username,
                                     actions: ["edit", "delete"],
-                                },
-                            ]}
+                                }
+                            })}
                             columns={[
-                                { id: "id", label: "ID", minWidth: 100 },
-                                { id: "name", label: "Name", minWidth: 170 },
-                                { id: "email", label: "Email", minWidth: 100 },
+                                {
+                                    id: "licensePlate",
+                                    label: "License Plate",
+                                },
+                                { id: "user", label: "Owner" },
+                                {
+                                    id: "timeIn",
+                                    label: "Time In",
+                                },
+                                {
+                                    id: "timeOut",
+                                    label: "Time Out",
+                                },
                                 {
                                     id: "actions",
                                     label: "Actions",
-                                    minWidth: 100,
                                 },
                             ]}
                         />

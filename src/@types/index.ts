@@ -19,13 +19,14 @@ export type AuthContextType = {
 }
 
 export type User = {
-    _id: string
+    _id?: string
     email: string
     username: string
     roles: string[]
 }
 
 export type CarLog = {
+    _id?: string
     licensePlate: string
     timeIn: string
     timeOut: string
