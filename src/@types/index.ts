@@ -24,3 +24,10 @@ export type User = {
     username: string
     roles: string[]
 }
+
+export type CarLog = {
+    licensePlate: string
+    timeIn: string
+    timeOut: string
+    user: string
+}

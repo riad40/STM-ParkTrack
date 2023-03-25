@@ -1,6 +1,7 @@
 import useAuth from "../hooks/useAuth"
 import { Header, Container, Table, Button } from "../components"
 import { HeaderOpions } from "../@types"
+import { Link } from "react-router-dom"
 
 const Dashboard = (): JSX.Element => {
     // Get the auth global state
@@ -17,7 +18,9 @@ const Dashboard = (): JSX.Element => {
                             <h1 className="text-2xl font-bold">
                                 The garage current state
                             </h1>
-                            <Button text="Add new Log" />
+                            <Link to="/logs/create">
+                                <Button text="Add new Log" />
+                            </Link>
                         </div>
                         <Table
                             data={[
