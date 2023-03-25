@@ -1,4 +1,4 @@
-import { Home, Login, Register } from "./pages"
+import { Home, Login, Register, Dashboard } from "./pages"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 const Router = (): JSX.Element => {
@@ -8,6 +8,7 @@ const Router = (): JSX.Element => {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
         </BrowserRouter>
     )
