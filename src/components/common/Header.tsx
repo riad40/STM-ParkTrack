@@ -13,7 +13,14 @@ const Header = ({ option }: HeaderProps): JSX.Element => {
             case HeaderOpions.User:
                 return <Nav items={[{ name: "logout" }, { name: "User" }]} />
             case HeaderOpions.Admin:
-                return <Nav items={[{ name: "logout" }, { name: "Admin" }]} />
+                return (
+                    <Nav
+                        items={[
+                            { name: "Welcome Super Admin" },
+                            { name: "logout" },
+                        ]}
+                    />
+                )
             default:
                 return <h1>Header</h1>
         }
