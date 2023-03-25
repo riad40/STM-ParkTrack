@@ -3,13 +3,13 @@ import { useState } from "react"
 import login from "../services/auth/login"
 
 const Login = (): JSX.Element => {
-    const [username, setUsername] = useState<string>("")
+    const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
 
     // Trigger the login function when the form is submitted
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const response = await login(username, password)
+        const response = await login(email, password)
         console.log(response)
     }
 
@@ -21,11 +21,11 @@ const Login = (): JSX.Element => {
                     <form onSubmit={handleSubmit}>
                         <Input
                             type="text"
-                            name="username"
-                            id="username"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            name="email"
+                            id="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <Input
                             type="password"

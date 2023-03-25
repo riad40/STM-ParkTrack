@@ -1,15 +1,14 @@
-import { auth } from "../../configs/firebase"
-import { createUserWithEmailAndPassword } from "firebase/auth"
+import api from "../../configs/api"
 
-// make register function
+// make a request to the register endpoint
 const register = async (username: string, email: string, password: string) => {
     try {
-        const response = await createUserWithEmailAndPassword(
-            auth,
+        const response = await api.post("/auth/register", {
+            username,
             email,
-            password
-        )
-        return response
+            password,
+        })
+        return response.data
     } catch (error) {
         return error
     }

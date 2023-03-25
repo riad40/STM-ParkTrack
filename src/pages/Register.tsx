@@ -3,10 +3,21 @@ import { useState } from "react"
 import register from "../services/auth/register"
 
 const Register = (): JSX.Element => {
-    const [username, setUsername] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
-    const [confirmPassword, setConfirmPassword] = useState<string>("")
-    const [email, setEmail] = useState<string>("")
+    const [data, setData] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    })
+
+    // handle input change
+    const setUsername = (username: string) => setData({ ...data, username })
+    const setEmail = (email: string) => setData({ ...data, email })
+    const setPassword = (password: string) => setData({ ...data, password })
+    const setConfirmPassword = (confirmPassword: string) =>
+        setData({ ...data, confirmPassword })
+
+    const { username, email, password, confirmPassword } = data
 
     // Trigger the register function when the form is submitted
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
