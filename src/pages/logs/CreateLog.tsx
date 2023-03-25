@@ -1,6 +1,8 @@
 import { FormContainer, Input, Button } from "../../components"
-import { useState } from "react"
-import { CarLog } from "../../@types"
+import { useState, useEffect } from "react"
+import { CarLog, User } from "../../@types"
+import createLog from "../../services/logs/createLog"
+import getUsers from "../../services/auth/users"
 
 const CreateLog = (): JSX.Element => {
     // Create the state for the form
@@ -21,12 +23,29 @@ const CreateLog = (): JSX.Element => {
         setLogsData({ ...logsData, [e.target.name]: e.target.value })
     }
 
+    // get the users
+    const [users, setUsers] = useState<User[]>([])
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const response = await getUsers()
+            setUsers(response)
+        }
+        fetchUsers()
+    }, [])
+
+    // trigger the createLog function when the form is submitted
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const response = await createLog(licensePlate, timeIn, timeOut, user)
+        console.log(response)
+    }
+
     return (
         <div className="flex justify-center items-center h-screen">
             <FormContainer
                 title="Create a new log"
                 children={
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <Input
                             type="text"
                             name="licensePlate"
@@ -59,8 +78,12 @@ const CreateLog = (): JSX.Element => {
                             onChange={handleOnChange}
                             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent mb-4 bg-gray-50 text-gray-900"
                         >
-                            <option value="1">John Doe</option>
-                            <option value="2">Jane Doe</option>
+                            <option value="">Select a user</option>
+                            {users.map((user) => (
+                                <option key={user._id} value={user._id}>
+                                    {user.username}
+                                </option>
+                            ))}
                         </select>
                         <Button text="Create" type="submit" />
                     </form>

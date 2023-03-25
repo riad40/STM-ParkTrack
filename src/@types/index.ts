@@ -19,7 +19,7 @@ export type AuthContextType = {
 }
 
 export type User = {
-    id: string
+    _id: string
     email: string
     username: string
     roles: string[]
