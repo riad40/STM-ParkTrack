@@ -23,7 +23,7 @@ const Dashboard = (): JSX.Element => {
 
     return (
         <div>
-            <Header option={HeaderOpions.Admin} />
+            <Header option={HeaderOpions.User} />
             <div className="flex justify-between items-center w-2/4 mx-auto my-7">
                 <button
                     onClick={() => handleClick("parking lot")}

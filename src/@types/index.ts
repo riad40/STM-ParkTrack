@@ -1,6 +1,5 @@
 export enum HeaderOpions {
     User,
-    Admin,
     Home,
 }
 
