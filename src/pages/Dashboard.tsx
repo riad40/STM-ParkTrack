@@ -4,6 +4,7 @@ import { HeaderOpions, CarLog } from "../@types"
 import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 import getLogs from "../services/logs/getLogs"
+import deleteLog from "../services/logs/deleteLog"
 
 const Dashboard = (): JSX.Element => {
     // Get the auth global state
@@ -19,7 +20,12 @@ const Dashboard = (): JSX.Element => {
         getLogsData()
     }, [])
 
-    console.log(logs)
+    // Delete the log
+    const handleDelete = async (id: string) => {
+        const response = await deleteLog(id)
+        // update the logs state
+        setLogs(logs.filter((log: CarLog) => log._id !== id))
+    }
 
     // based on the user role, render the appropriate content
     if (auth.user?.roles?.includes("super admin")) {
@@ -44,7 +50,16 @@ const Dashboard = (): JSX.Element => {
                                     timeIn: log.timeIn,
                                     timeOut: log.timeOut,
                                     user: log.user.username,
-                                    actions: ["edit", "delete"],
+                                    actions: [
+                                        {
+                                            type: "edit",
+                                        },
+                                        {
+                                            type: "delete",
+                                            onClick: () =>
+                                                handleDelete(log._id),
+                                        },
+                                    ],
                                 }
                             })}
                             columns={[

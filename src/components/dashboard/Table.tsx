@@ -26,31 +26,21 @@ const Table = ({ data, columns }: TableProps): JSX.Element => {
                                 {column.id === "actions" && (
                                     <div className="flex justify-between">
                                         {row[column.id].map((action: any) =>
-                                            action === "edit" ? (
+                                            action.type === "edit" ? (
                                                 <Link
-                                                    key={action}
                                                     to={`/logs/${row._id}/edit`}
                                                 >
-                                                    <button className="text-blue-500 bg-blue-100 rounded px-2 py-1">
-                                                        edit
+                                                    <button className="text-blue-500 bg-blue-100 px-2 py-1 rounded">
+                                                        Edit
                                                     </button>
                                                 </Link>
                                             ) : (
-                                                <svg
-                                                    key={action}
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-6 w-6 text-red-500"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
+                                                <button
+                                                    className="text-red-500 bg-red-100 px-2 py-1 rounded"
+                                                    onClick={action.onClick}
                                                 >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth={2}
-                                                        d="M6 18L18 6M6 6l12 12"
-                                                    />
-                                                </svg>
+                                                    Delete
+                                                </button>
                                             )
                                         )}
                                     </div>
