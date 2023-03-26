@@ -1,51 +1,18 @@
 import useAuth from "../hooks/useAuth"
-import { Header, Container, Table, Button } from "../components"
-import { HeaderOpions, CarLog } from "../@types"
-import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
-import getLogs from "../services/logs/getLogs"
-import deleteLog from "../services/logs/deleteLog"
+import { Header, Container, GarageLogs, ParkingLot } from "../components"
+import { HeaderOpions } from "../@types"
+import { useState, useEffect } from "react"
 
 const Dashboard = (): JSX.Element => {
     // Get the auth global state
     const { auth } = useAuth()
 
-    // Get the logs
-    const [logs, setLogs] = useState<any>([])
-    useEffect(() => {
-        const getLogsData = async () => {
-            const response = await getLogs()
-            setLogs(response)
-        }
-        getLogsData()
-    }, [])
+    // active tab state
+    const [activeTab, setActiveTab] = useState<string>("parking lot")
 
-    // Delete the log
-    const handleDelete = async (id: string) => {
-        const response = await deleteLog(id)
-        // update the logs state
-        setLogs(logs.filter((log: CarLog) => log._id !== id))
-    }
-
-    // handle the filter by license plate
-    const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const filter = e.target.value.trim()
-
-        // if the filter is empty, get all the logs
-        if (!filter) {
-            const getLogsData = async () => {
-                const response = await getLogs()
-                setLogs(response)
-            }
-            getLogsData()
-            return
-        }
-
-        // filter the logs
-        const filteredLogs = logs.filter((log: CarLog) => {
-            return log.licensePlate.toLowerCase().includes(filter.toLowerCase())
-        })
-        setLogs(filteredLogs)
+    // handle click
+    const handleClick = (option: string) => {
+        setActiveTab(option)
     }
 
     // based on the user role, render the appropriate content
@@ -53,62 +20,33 @@ const Dashboard = (): JSX.Element => {
         return (
             <div>
                 <Header option={HeaderOpions.Admin} />
+                <div className="flex justify-between items-center w-2/4 mx-auto my-7">
+                    <button
+                        onClick={() => handleClick("parking lot")}
+                        className={`${
+                            activeTab === "parking lot"
+                                ? "bg-gray-300"
+                                : "bg-gray-100"
+                        } px-2 py-1 rounded-md`}
+                    >
+                        Parking Lot
+                    </button>
+
+                    <button
+                        onClick={() => handleClick("garage logs")}
+                        className={`${
+                            activeTab === "garage logs"
+                                ? "bg-gray-300"
+                                : "bg-gray-100"
+                        } px-2 py-1 rounded-md`}
+                    >
+                        Garage Logs
+                    </button>
+                </div>
                 <Container>
                     <>
-                        <div className="flex justify-between items-center w-2/4 mx-auto">
-                            <h1 className="text-2xl font-bold">
-                                The garage current state
-                            </h1>
-                            <input
-                                type="text"
-                                placeholder="filter by license plate"
-                                onChange={handleFilter}
-                                className="border border-gray-300 rounded-md px-2 py-1"
-                            />
-                            <Link to="/logs/create">
-                                <Button text="Add new Log" />
-                            </Link>
-                        </div>
-                        <Table
-                            data={logs.map((log: any) => {
-                                return {
-                                    _id: log._id,
-                                    licensePlate: log.licensePlate,
-                                    timeIn: log.timeIn,
-                                    timeOut: log.timeOut,
-                                    user: log.user.username,
-                                    actions: [
-                                        {
-                                            type: "edit",
-                                        },
-                                        {
-                                            type: "delete",
-                                            onClick: () =>
-                                                handleDelete(log._id),
-                                        },
-                                    ],
-                                }
-                            })}
-                            columns={[
-                                {
-                                    id: "licensePlate",
-                                    label: "License Plate",
-                                },
-                                { id: "user", label: "Owner" },
-                                {
-                                    id: "timeIn",
-                                    label: "Time In",
-                                },
-                                {
-                                    id: "timeOut",
-                                    label: "Time Out",
-                                },
-                                {
-                                    id: "actions",
-                                    label: "Actions",
-                                },
-                            ]}
-                        />
+                        {activeTab === "parking lot" && <ParkingLot />}
+                        {activeTab === "garage logs" && <GarageLogs />}
                     </>
                 </Container>
             </div>
