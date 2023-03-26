@@ -7,7 +7,7 @@ const VehicleLogs = () => {
     const { auth } = useAuth()
 
     // disruct the _id from the user
-    const { id } = auth?.user
+    const id = auth?.user?.id
 
     // create the state for the logs
     const [logs, setLogs] = useState<any>([])

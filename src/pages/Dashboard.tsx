@@ -49,7 +49,7 @@ const Dashboard = (): JSX.Element => {
                 <>
                     {activeTab === "parking lot" && <ParkingLot />}
                     {activeTab === "logs" &&
-                        (auth.user.roles.includes("super admin") ? (
+                        (auth?.user?.roles?.includes("super admin") ? (
                             <GarageLogs />
                         ) : (
                             <VehicleLogs />

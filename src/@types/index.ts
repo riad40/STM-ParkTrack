@@ -8,8 +8,8 @@ export type NavOptions = {
 }[]
 
 export type AuthOptions = {
-    user: User
-    token: string
+    user: User | null
+    token: string | null
 }
 
 export type AuthContextType = {
