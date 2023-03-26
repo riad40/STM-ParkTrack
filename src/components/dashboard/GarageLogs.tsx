@@ -20,7 +20,11 @@ const GarageLogs = (): JSX.Element => {
 
     // Delete the log
     const handleDelete = async (id: string) => {
-        const response = await deleteLog(id)
+        const confirm = window.confirm(
+            "Are you sure you want to delete this log?"
+        )
+        if (!confirm) return
+        await deleteLog(id)
         // update the logs state
         setLogs(logs.filter((log: CarLog) => log._id !== id))
     }
