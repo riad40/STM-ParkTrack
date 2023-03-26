@@ -7,6 +7,7 @@ import Table from "./dashboard/Table"
 import GarageLogs from "./dashboard/GarageLogs"
 import ParkingLot from "./dashboard/Parking Lot"
 import VehicleLogs from "./dashboard/VehicleLogs"
+import Alert from "./common/Alert"
 
 export {
     Header,
@@ -18,4 +19,5 @@ export {
     GarageLogs,
     ParkingLot,
     VehicleLogs,
+    Alert,
 }
