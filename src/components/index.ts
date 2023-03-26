@@ -8,6 +8,7 @@ import GarageLogs from "./dashboard/GarageLogs"
 import ParkingLot from "./dashboard/Parking Lot"
 import VehicleLogs from "./dashboard/VehicleLogs"
 import Alert from "./common/Alert"
+import Loading from "./common/Loading"
 
 export {
     Header,
@@ -20,4 +21,5 @@ export {
     ParkingLot,
     VehicleLogs,
     Alert,
+    Loading,
 }

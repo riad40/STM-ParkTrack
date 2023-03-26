@@ -60,9 +60,7 @@ const Login = (): JSX.Element => {
 
         // set success message and redirect user to the dashboard
         setSuccess(`${response.message} Redirecting to dashboard....`)
-        setTimeout(() => {
-            navigate("/dashboard")
-        }, 3000)
+        navigate("/dashboard")
     }
 
     return (

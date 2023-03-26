@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import getVehicleLogs from "../../services/logs/getVehicleLogs"
 import useAuth from "../../hooks/useAuth"
+import { Loading } from "../"
 
 const VehicleLogs = () => {
     // get the user from the local storage
@@ -11,11 +12,13 @@ const VehicleLogs = () => {
 
     // create the state for the logs
     const [logs, setLogs] = useState<any>([])
+    const [loading, setLoading] = useState<boolean>(true)
 
     // fetch the logs
     const fetchVehicleLogs = async () => {
         const response = await getVehicleLogs(id as string)
         setLogs(response)
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -29,6 +32,8 @@ const VehicleLogs = () => {
             </center>
         )
     }
+
+    if (loading) return <Loading />
 
     return (
         <div className="flex flex-col justify-center items-center h-screen">

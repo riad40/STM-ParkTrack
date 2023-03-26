@@ -3,16 +3,17 @@ import { useEffect, useState } from "react"
 import getLogs from "../../services/logs/getLogs"
 import deleteLog from "../../services/logs/deleteLog"
 import { CarLog } from "../../@types"
-import { Table, Button } from "../../components"
+import { Table, Button, Loading } from "../../components"
 
 const GarageLogs = (): JSX.Element => {
     // Get the logs
     const [logs, setLogs] = useState<any>([])
+    const [loading, setLoading] = useState<boolean>(true)
     useEffect(() => {
         const getLogsData = async () => {
             const response = await getLogs()
             setLogs(response)
-            console.log(response)
+            setLoading(false)
         }
         getLogsData()
     }, [])
@@ -44,6 +45,8 @@ const GarageLogs = (): JSX.Element => {
         })
         setLogs(filteredLogs)
     }
+
+    if (loading) return <Loading />
 
     return (
         <>
