@@ -12,6 +12,7 @@ const GarageLogs = (): JSX.Element => {
         const getLogsData = async () => {
             const response = await getLogs()
             setLogs(response)
+            console.log(response)
         }
         getLogsData()
     }, [])
