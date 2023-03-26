@@ -21,7 +21,7 @@ const updateLog = async (
                 },
             }
         )
-        return response?.data
+        return response
     } catch (error) {
         return error
     }

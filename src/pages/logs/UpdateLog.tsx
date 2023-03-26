@@ -1,14 +1,21 @@
-import { FormContainer, Input, Button } from "../../components"
+import { FormContainer, Input, Alert, Loading } from "../../components"
 import { useState, useEffect } from "react"
 import { CarLog } from "../../@types"
 import updateLog from "../../services/logs/updateLog"
 import getUsers from "../../services/auth/users"
 import getOneLog from "../../services/logs/getOneLog"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
+import InputValidator from "../../helpers/formValidator"
 
 const UpdateLog = (): JSX.Element => {
     // Create the state for the form
-    const [logsData, setLogsData] = useState<CarLog>({} as CarLog)
+    const [logsData, setLogsData] = useState<CarLog>({
+        licensePlate: "",
+        timeIn: "",
+        timeOut: "",
+        user: "",
+    })
+    const [isLoading, setIsLoading] = useState(true)
 
     // Destructure the state
     const { licensePlate, timeIn, timeOut, user } = logsData
@@ -18,6 +25,8 @@ const UpdateLog = (): JSX.Element => {
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
         setLogsData({ ...logsData, [e.target.name]: e.target.value })
+        // reset the errors
+        setErrors("")
     }
 
     // get the id from the url
@@ -36,73 +45,131 @@ const UpdateLog = (): JSX.Element => {
         const fetchLog = async () => {
             const response = await getOneLog(id)
             setLogsData(response)
+            setIsLoading(false)
         }
 
         fetchUsers()
         fetchLog()
     }, [])
 
+    // handle the form validation
+    const [errors, setErrors] = useState<string>("")
+    const [success, setSuccess] = useState<string>("")
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isSubmitted, setIsSubmitted] = useState(false)
+
+    const navigate = useNavigate()
+
+    const validateInputs = () => {
+        if (!InputValidator.isAllInputsFilled([licensePlate, timeIn, user])) {
+            setErrors("All inputs are required")
+            setIsSubmitting(false)
+            return false
+        }
+        return true
+    }
+
     // trigger the UpdateLog function when the form is submitted
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const response = await updateLog(
+
+        if (!validateInputs()) {
+            setIsSubmitting(false)
+            return
+        }
+
+        const response: any = await updateLog(
             licensePlate,
             timeIn,
             timeOut,
             user,
             id
         )
-        console.log(logsData)
+
         console.log(response)
+
+        setIsSubmitting(true)
+
+        if (response.status === 200) {
+            setIsSubmitted(true)
+            setIsSubmitting(false)
+            setLogsData({
+                licensePlate: "",
+                timeIn: "",
+                timeOut: "",
+                user: "",
+            })
+            setSuccess(
+                `${response?.data?.message} Redirecting to dashboard ...`
+            )
+            setTimeout(() => {
+                navigate("/dashboard")
+            }, 2000)
+        }
+
+        setErrors(response.message)
     }
+
+    if (isLoading) return <Loading />
 
     return (
         <div className="flex justify-center items-center h-screen">
             <FormContainer
                 title="Create a new log"
                 children={
-                    <form onSubmit={handleSubmit}>
-                        <Input
-                            type="text"
-                            name="licensePlate"
-                            id="licensePlate"
-                            placeholder="15332618HFZF5"
-                            value={licensePlate}
-                            onChange={handleOnChange}
-                        />
-
-                        <Input
-                            type="datetime-local"
-                            name="timeIn"
-                            id="timeOut"
-                            placeholder="2021-08-01T12:00:00"
-                            value={timeIn}
-                            onChange={handleOnChange}
-                        />
-                        <Input
-                            type="datetime-local"
-                            name="timeOut"
-                            id="timeOut"
-                            placeholder="2021-08-01T12:00:00"
-                            value={timeOut}
-                            onChange={handleOnChange}
-                        />
-                        <select
-                            name="user"
-                            id="owner"
-                            value={user}
-                            onChange={handleOnChange}
-                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent mb-4 bg-gray-50 text-gray-900"
-                        >
-                            <option value="">Select a user</option>
-                            {users.map((user: any) => (
-                                <option key={user._id} value={user._id}>
-                                    {user.username}
-                                </option>
-                            ))}
-                        </select>
-                        <Button text="Create" type="submit" />
-                    </form>
+                    <>
+                        {errors && <Alert content={errors} success={false} />}
+                        {isSubmitted && (
+                            <Alert content={success} success={true} />
+                        )}
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                type="text"
+                                name="licensePlate"
+                                id="licensePlate"
+                                placeholder="15332618HFZF5"
+                                value={licensePlate}
+                                onChange={handleOnChange}
+                            />
+                            <Input
+                                type="datetime-local"
+                                name="timeIn"
+                                id="timeOut"
+                                placeholder="2021-08-01T12:00:00"
+                                value={timeIn}
+                                onChange={handleOnChange}
+                            />
+                            <Input
+                                type="datetime-local"
+                                name="timeOut"
+                                id="timeOut"
+                                placeholder="2021-08-01T12:00:00"
+                                value={timeOut}
+                                onChange={handleOnChange}
+                            />
+                            <select
+                                name="user"
+                                id="owner"
+                                value={user}
+                                onChange={handleOnChange}
+                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent mb-4 bg-gray-50 text-gray-900"
+                            >
+                                <option value="">Select a user</option>
+                                {users.map((user: any) => (
+                                    <option key={user._id} value={user._id}>
+                                        {user.username}
+                                    </option>
+                                ))}
+                            </select>
+                            <button
+                                className="w-full p-2 bg-blue-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent mb-4"
+                                type="submit"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? "Submitting..." : "Submit"}
+                            </button>{" "}
+                        </form>
+                    </>
                 }
             />
         </div>
