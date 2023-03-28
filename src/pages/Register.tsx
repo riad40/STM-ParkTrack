@@ -87,7 +87,10 @@ const Register = (): JSX.Element => {
                                 id="username"
                                 placeholder="Username"
                                 value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={(e) => {
+                                    setUsername(e.target.value)
+                                    setErr("")
+                                }}
                             />
                             <Input
                                 type="email"
@@ -95,7 +98,10 @@ const Register = (): JSX.Element => {
                                 id="email"
                                 placeholder="Email"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) => {
+                                    setEmail(e.target.value)
+                                    setErr("")
+                                }}
                             />
                             <Input
                                 type="password"
@@ -103,7 +109,10 @@ const Register = (): JSX.Element => {
                                 id="password"
                                 placeholder="Password"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => {
+                                    setPassword(e.target.value)
+                                    setErr("")
+                                }}
                             />
                             <Input
                                 type="password"
@@ -111,17 +120,18 @@ const Register = (): JSX.Element => {
                                 id="confirmPassword"
                                 placeholder="Confirm Password"
                                 value={confirmPassword}
-                                onChange={(e) =>
+                                onChange={(e) => {
                                     setConfirmPassword(e.target.value)
-                                }
+                                    setErr("")
+                                }}
                             />
                             <button
                                 type="submit"
-                                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                className="w-full py-2 px-4 text-white bg-gray-800 rounded mt-4"
                             >
                                 Register
                             </button>
-                            <p className="text-center py-3 text-blue-500">
+                            <p className="text-center py-3 text-gray-800">
                                 Already Have An Account ?
                                 <Link to="/login" className="font-bold px-2">
                                     Login

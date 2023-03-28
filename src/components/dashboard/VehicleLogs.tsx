@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
 import getVehicleLogs from "../../services/logs/getVehicleLogs"
 import useAuth from "../../hooks/useAuth"
-import { Loading } from "../"
+import { Loading, Table } from "../"
+import formatDate from "../../helpers/formatDate"
 
 const VehicleLogs = () => {
     // get the user from the local storage
@@ -36,29 +37,36 @@ const VehicleLogs = () => {
     if (loading) return <Loading />
 
     return (
-        <div className="flex flex-col justify-center items-center h-screen">
-            <div className="flex flex-col justify-center items-center w-2/4">
-                {logs &&
-                    logs.map((log: any) => (
-                        <div
-                            key={log._id}
-                            className="flex justify-between items-center w-full p-2 my-2 border-2 rounded-lg border-gray-400"
-                        >
-                            <div className="flex flex-col justify-center items-center">
-                                <p className="text-xl font-bold">
-                                    {log.licensePlate}
-                                </p>
-                                <p className="text-sm">{log.timeIn}</p>
-                            </div>
-                            <div className="flex flex-col justify-center items-center">
-                                <p className="text-xl font-bold">
-                                    {log.user.username}
-                                </p>
-                                <p className="text-sm">{log.timeOut}</p>
-                            </div>
-                        </div>
-                    ))}
-            </div>
+        <div className="w-9/12 mx-auto" style={{ maxWidth: 900 }}>
+            <Table
+                data={logs.map((log: any) => {
+                    return {
+                        _id: log._id,
+                        licensePlate: log.licensePlate,
+                        timeIn: formatDate(log.timeIn, false),
+                        timeOut: log.timeOut
+                            ? formatDate(log.timeOut, false)
+                            : "-",
+                    }
+                })}
+                columns={[
+                    {
+                        id: "licensePlate",
+                        label: "License Plate",
+                        minWidth: 170,
+                    },
+                    {
+                        id: "timeIn",
+                        label: "Time In",
+                        minWidth: 170,
+                    },
+                    {
+                        id: "timeOut",
+                        label: "Time Out",
+                        minWidth: 170,
+                    },
+                ]}
+            />
         </div>
     )
 }

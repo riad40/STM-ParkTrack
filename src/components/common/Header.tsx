@@ -1,32 +1,45 @@
-import { HeaderOpions } from "../../@types"
-import Nav from "./Nav"
 import useAuth from "../../hooks/useAuth"
-interface HeaderProps {
-    option: HeaderOpions
-}
+import { Link, useNavigate } from "react-router-dom"
+import logout from "../../services/auth/logout"
 
-const Header = ({ option }: HeaderProps): JSX.Element => {
-    const { auth } = useAuth()
+const Header = (): JSX.Element => {
+    const { auth, setAuth } = useAuth()
 
-    const renderHeader = (): JSX.Element => {
-        switch (option) {
-            case HeaderOpions.Home:
-                return <Nav items={[{ name: "Login" }]} />
-            case HeaderOpions.User:
-                return (
-                    <Nav
-                        items={[
-                            { name: `Welcome ${auth?.user?.username}` },
-                            { name: "logout" },
-                        ]}
-                    />
-                )
-            default:
-                return <h1>Header</h1>
-        }
+    const navigate = useNavigate()
+
+    // handle logout
+    const handleLogout = async () => {
+        await logout()
+        // clear the auth global state, && local storage
+        localStorage.clear()
+        setAuth({ token: null, user: null })
+
+        // redirect user to the login page
+        navigate("/")
     }
 
-    return <header>{renderHeader()}</header>
+    return (
+        <header className="w-full" style={{ backgroundColor: "#202442" }}>
+            <nav className="flex flex-col sm:flex-row sm:justify-between items-center w-3/4 mx-auto py-5">
+                <Link
+                    to={auth?.token ? "/dashboard" : "/"}
+                    className="brand-logo"
+                >
+                    <h1 className="text-white text-2xl">STM ParkTrack</h1>
+                </Link>
+                <Link
+                    to="/login"
+                    className="py-2 px-4 text-white bg-gray-500 rounded"
+                >
+                    {auth?.token ? (
+                        <button onClick={handleLogout}>Logout</button>
+                    ) : (
+                        <button>Login</button>
+                    )}
+                </Link>
+            </nav>
+        </header>
+    )
 }
 
 export default Header

@@ -1,4 +1,4 @@
-import { FormContainer, Input, Button, Alert } from "../components"
+import { FormContainer, Input, Alert } from "../components"
 import { useState } from "react"
 import login from "../services/auth/login"
 import useAuth from "../hooks/useAuth"
@@ -78,7 +78,10 @@ const Login = (): JSX.Element => {
                                 id="email"
                                 placeholder="Email"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) => {
+                                    setEmail(e.target.value)
+                                    setError("")
+                                }}
                             />
                             <Input
                                 type="password"
@@ -86,15 +89,18 @@ const Login = (): JSX.Element => {
                                 id="password"
                                 placeholder="Password"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => {
+                                    setPassword(e.target.value)
+                                    setError("")
+                                }}
                             />
                             <button
                                 type="submit"
-                                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                className="py-2 px-4 text-white bg-gray-800 rounded w-full mt-4"
                             >
                                 Log in
                             </button>
-                            <p className="text-center py-3 text-blue-500">
+                            <p className="text-center py-3 text-gray-800">
                                 First Time Here ?
                                 <Link to="/register" className="font-bold px-2">
                                     Register

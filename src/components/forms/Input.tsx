@@ -6,6 +6,7 @@ interface InputProps {
     value: string
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     showLabel?: boolean
+    date?: boolean
 }
 
 const Input = ({
@@ -16,6 +17,7 @@ const Input = ({
     value,
     onChange,
     showLabel = false,
+    date = false,
 }: InputProps) => {
     return (
         <div>
@@ -32,10 +34,20 @@ const Input = ({
                     type={type}
                     name={name}
                     id={id}
-                    className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent my-1"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-transparent mb-4 bg-gray-50 text-gray-900"
                     placeholder={placeholder}
                     value={value}
                     onChange={onChange}
+                    onFocus={(e) => {
+                        if (date) {
+                            e.currentTarget.type = "datetime-local"
+                        }
+                    }}
+                    onBlur={(e) => {
+                        if (date) {
+                            e.currentTarget.type = "text"
+                        }
+                    }}
                 />
             </div>
         </div>

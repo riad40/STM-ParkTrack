@@ -3,7 +3,8 @@ import { useEffect, useState } from "react"
 import getLogs from "../../services/logs/getLogs"
 import deleteLog from "../../services/logs/deleteLog"
 import { CarLog } from "../../@types"
-import { Table, Button, Loading } from "../../components"
+import { Table, Loading } from "../../components"
+import formatDate from "../../helpers/formatDate"
 
 const GarageLogs = (): JSX.Element => {
     // Get the logs
@@ -53,58 +54,72 @@ const GarageLogs = (): JSX.Element => {
     if (loading) return <Loading />
 
     return (
-        <>
-            <div className="flex justify-between items-center w-2/4 mx-auto my-7">
+        <div
+            className="w-9/12 mx-auto flex flex-col gap-4"
+            style={{ maxWidth: 900 }}
+        >
+            <div className="w-full flex justify-between items-center">
                 <input
                     type="text"
                     placeholder="filter by license plate"
                     onChange={handleFilter}
-                    className="border border-gray-300 rounded-md px-2 py-1"
+                    className="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 w-1/2"
                 />
-                <Link to="/logs/create">
-                    <Button text="Add new Log" />
-                </Link>
+                <button className="text-white bg-blue-500 px-2 py-1 rounded">
+                    <Link to="/logs/create">Create Log</Link>
+                </button>
             </div>
-            <Table
-                data={logs.map((log: any) => {
-                    return {
-                        _id: log._id,
-                        licensePlate: log.licensePlate,
-                        timeIn: log.timeIn,
-                        timeOut: log.timeOut ? log.timeOut : "Still in",
-                        user: log.user.username,
-                        actions: [
-                            {
-                                type: "edit",
-                            },
-                            {
-                                type: "delete",
-                                onClick: () => handleDelete(log._id),
-                            },
-                        ],
-                    }
-                })}
-                columns={[
-                    {
-                        id: "licensePlate",
-                        label: "License Plate",
-                    },
-                    { id: "user", label: "Owner" },
-                    {
-                        id: "timeIn",
-                        label: "Time In",
-                    },
-                    {
-                        id: "timeOut",
-                        label: "Time Out",
-                    },
-                    {
-                        id: "actions",
-                        label: "Actions",
-                    },
-                ]}
-            />
-        </>
+
+            {logs.length === 0 ? (
+                <div className="text-center text-gray-500">No logs found</div>
+            ) : (
+                <Table
+                    data={logs.map((log: any) => {
+                        return {
+                            _id: log._id,
+                            licensePlate: log.licensePlate,
+                            timeIn: formatDate(log.timeIn, false),
+                            timeOut: log.timeOut
+                                ? formatDate(log.timeOut, false)
+                                : "-",
+                            user: log.user.username,
+                            actions: [
+                                {
+                                    type: "edit",
+                                },
+                                {
+                                    type: "delete",
+                                    onClick: () => handleDelete(log._id),
+                                },
+                            ],
+                        }
+                    })}
+                    columns={[
+                        {
+                            id: "licensePlate",
+                            label: "License Plate",
+                            minWidth: 170,
+                        },
+                        { id: "user", label: "Owner" },
+                        {
+                            id: "timeIn",
+                            label: "Time In",
+                            minWidth: 170,
+                        },
+                        {
+                            id: "timeOut",
+                            label: "Time Out",
+                            minWidth: 170,
+                        },
+                        {
+                            id: "actions",
+                            label: "Actions",
+                            minWidth: 170,
+                        },
+                    ]}
+                />
+            )}
+        </div>
     )
 }
 

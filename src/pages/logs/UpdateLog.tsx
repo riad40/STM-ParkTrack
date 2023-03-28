@@ -4,8 +4,9 @@ import { CarLog } from "../../@types"
 import updateLog from "../../services/logs/updateLog"
 import getUsers from "../../services/auth/users"
 import getOneLog from "../../services/logs/getOneLog"
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, Link } from "react-router-dom"
 import InputValidator from "../../helpers/formValidator"
+import formatDate from "../../helpers/formatDate"
 
 const UpdateLog = (): JSX.Element => {
     // Create the state for the form
@@ -86,8 +87,6 @@ const UpdateLog = (): JSX.Element => {
             id
         )
 
-        console.log(response)
-
         setIsSubmitting(true)
 
         if (response.status === 200) {
@@ -115,7 +114,7 @@ const UpdateLog = (): JSX.Element => {
     return (
         <div className="flex justify-center items-center h-screen">
             <FormContainer
-                title="Create a new log"
+                title="Update the log"
                 children={
                     <>
                         {errors && <Alert content={errors} success={false} />}
@@ -134,19 +133,23 @@ const UpdateLog = (): JSX.Element => {
                             <Input
                                 type="datetime-local"
                                 name="timeIn"
-                                id="timeOut"
+                                id="timeIn"
                                 placeholder="2021-08-01T12:00:00"
-                                value={timeIn}
+                                value={formatDate(timeIn, true)}
                                 onChange={handleOnChange}
                             />
+
                             <Input
                                 type="datetime-local"
                                 name="timeOut"
                                 id="timeOut"
                                 placeholder="2021-08-01T12:00:00"
-                                value={timeOut}
+                                value={
+                                    !timeOut ? "" : formatDate(timeOut, true)
+                                }
                                 onChange={handleOnChange}
                             />
+
                             <select
                                 name="user"
                                 id="owner"
@@ -161,13 +164,20 @@ const UpdateLog = (): JSX.Element => {
                                     </option>
                                 ))}
                             </select>
-                            <button
-                                className="w-full p-2 bg-blue-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent mb-4"
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
-                                {isSubmitting ? "Submitting..." : "Submit"}
-                            </button>{" "}
+                            <div className="flex justify-between items-center">
+                                <button
+                                    className="px-5 py-2 bg-blue-600 text-white rounded-md focus:outline-none focus:border-transparent"
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? "Submitting..." : "Submit"}
+                                </button>
+                                <Link to="/dashboard">
+                                    <button className="px-5 py-2 bg-gray-600 text-white rounded-md focus:outline-none focus:border-transparent">
+                                        Cancel
+                                    </button>
+                                </Link>
+                            </div>
                         </form>
                     </>
                 }

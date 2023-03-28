@@ -4,7 +4,7 @@ import { CarLog } from "../../@types"
 import createLog from "../../services/logs/createLog"
 import getUsers from "../../services/auth/users"
 import InputValidator from "../../helpers/formValidator"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
 const CreateLog = (): JSX.Element => {
     // Create the state for the form
@@ -105,33 +105,35 @@ const CreateLog = (): JSX.Element => {
                                 type="text"
                                 name="licensePlate"
                                 id="licensePlate"
-                                placeholder="15332618HFZF5"
+                                placeholder="License Plate Number (e.g. 123ABC)"
                                 value={licensePlate}
                                 onChange={handleOnChange}
                             />
 
                             <Input
-                                type="datetime-local"
+                                type="text"
                                 name="timeIn"
-                                id="timeOut"
-                                placeholder="2021-08-01T12:00:00"
+                                id="timeIn"
+                                placeholder="Time In (e.g. 2021-08-01T12:00:00)"
                                 value={timeIn}
                                 onChange={handleOnChange}
+                                date={true}
                             />
                             <Input
-                                type="datetime-local"
+                                type="text"
                                 name="timeOut"
                                 id="timeOut"
-                                placeholder="2021-08-01T12:00:00"
+                                placeholder="Time Out (e.g. 2021-08-01T12:00:00)"
                                 value={timeOut}
                                 onChange={handleOnChange}
+                                date={true}
                             />
                             <select
                                 name="user"
                                 id="owner"
                                 value={user}
                                 onChange={handleOnChange}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent mb-4 bg-gray-50 text-gray-900"
+                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-transparent mb-4 bg-gray-50 text-gray-900"
                             >
                                 <option value="">Select a user</option>
                                 {users.map((user: any) => (
@@ -140,13 +142,20 @@ const CreateLog = (): JSX.Element => {
                                     </option>
                                 ))}
                             </select>
-                            <button
-                                className="w-full p-2 bg-blue-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent mb-4"
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
-                                {isSubmitting ? "Submitting..." : "Submit"}
-                            </button>
+                            <div className="flex justify-between items-center">
+                                <button
+                                    className="px-5 py-2 bg-blue-600 text-white rounded-md focus:outline-none focus:border-transparent"
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? "Submitting..." : "Submit"}
+                                </button>
+                                <Link to="/dashboard">
+                                    <button className="px-5 py-2 bg-gray-600 text-white rounded-md focus:outline-none focus:border-transparent">
+                                        Cancel
+                                    </button>
+                                </Link>
+                            </div>
                         </form>
                     </>
                 }

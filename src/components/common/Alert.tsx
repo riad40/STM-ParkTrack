@@ -8,8 +8,8 @@ const Alert = ({ content, success }: AlertProps): JSX.Element => {
         <div
             className={
                 !success
-                    ? "bg-red-100 border-red-500 border-t-4 rounded-b text-red-900 px-4 py-3 shadow-md w-full"
-                    : "bg-teal-100 border-teal-500 border-t-4 rounded-b text-teal-900 px-4 py-3 shadow-md w-full"
+                    ? "bg-red-100 border-red-500 border-t-4 rounded-b text-red-900 px-4 py-3 shadow-md w-full mb-4"
+                    : "bg-teal-100 border-teal-500 border-t-4 rounded-b text-teal-900 px-4 py-3 shadow-md w-full mb-4"
             }
             role="alert"
         >
