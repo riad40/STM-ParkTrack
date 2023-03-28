@@ -1,12 +1,3 @@
-export enum HeaderOpions {
-    User,
-    Home,
-}
-
-export type NavOptions = {
-    name: string
-}[]
-
 export type AuthOptions = {
     user: User | null
     token: string | null
