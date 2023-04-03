@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import logout from "../../services/auth/logout"
 
 const Header = (): JSX.Element => {
-    const { auth, setAuth } = useAuth()
+    const { auth, dispatch } = useAuth()
 
     const navigate = useNavigate()
 
@@ -12,7 +12,13 @@ const Header = (): JSX.Element => {
         await logout()
         // clear the auth global state, && local storage
         localStorage.clear()
-        setAuth({ token: null, user: null })
+        dispatch({
+            type: "SET_AUTH",
+            payload: {
+                token: "",
+                user: {},
+            },
+        })
 
         // redirect user to the login page
         navigate("/")

@@ -1,17 +1,12 @@
-import { useContext } from "react"
-import { AuthContext } from "../contexts/AuthContext"
+import { useSelector, useDispatch } from "react-redux"
+import { rootState } from "../@types"
 
 const useAuth = () => {
-    // set context type
-    const context = useContext(AuthContext)
+    const dispatch = useDispatch()
 
-    // check if context is undefined
-    if (context === undefined) {
-        throw new Error("useAuth must be used within a AuthProvider")
-    }
+    const auth = useSelector((state: rootState) => state.auth)
 
-    // return context
-    return context
+    return { auth, dispatch }
 }
 
 export default useAuth

@@ -15,7 +15,7 @@ const Login = (): JSX.Element => {
     const navigate = useNavigate()
 
     // Get the setAuth function
-    const { setAuth } = useAuth()
+    const { dispatch } = useAuth()
 
     // input validation
     const validateInputs = (): boolean => {
@@ -37,8 +37,6 @@ const Login = (): JSX.Element => {
         if (!validateInputs()) return
         const response = await login(email, password)
 
-        console.log(response)
-
         // check if the response contains an error
         if (response?.response?.status == 400) {
             setError(response?.response?.data?.message)
@@ -53,7 +51,7 @@ const Login = (): JSX.Element => {
         localStorage.setItem("user", JSON.stringify(user))
 
         // set the auth global state
-        setAuth({ token, user })
+        dispatch({ type: "SET_AUTH", payload: { token, user } })
 
         // set the error to an empty string
         setError("")

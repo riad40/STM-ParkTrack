@@ -1,3 +1,5 @@
+import rootReducer from "../state/reducers"
+
 export type AuthOptions = {
     user: User | null
     token: string | null
@@ -22,3 +24,5 @@ export type CarLog = {
     timeOut: string
     user: string
 }
+
+export type rootState = ReturnType<typeof rootReducer>
