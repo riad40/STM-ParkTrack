@@ -1,5 +1,5 @@
 import { FormContainer, Input, Alert } from "../../components"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { CarLog } from "../../@types"
 import createLog from "../../services/logs/createLog"
 import getUsers from "../../services/auth/users"
@@ -19,13 +19,16 @@ const CreateLog = (): JSX.Element => {
     const { licensePlate, timeIn, timeOut, user } = logsData
 
     // Create the handleOnChange function
-    const handleOnChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ) => {
-        setLogsData({ ...logsData, [e.target.name]: e.target.value })
-        // reset the errors
-        setErrors("")
-    }
+    const handleOnChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+            setLogsData({
+                ...logsData,
+                [e.target.name]: e.target.value,
+            })
+            setErrors("")
+        },
+        [logsData]
+    )
 
     // get the users
     const [users, setUsers] = useState<any>([])
