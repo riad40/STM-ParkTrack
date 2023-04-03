@@ -1,9 +1,6 @@
 import api from "../../configs/api"
 
-// get the token from the local storage
-const token = localStorage.getItem("token")
-
-const getCurrentGarageState = async () => {
+const getCurrentGarageState = async (token: string) => {
     try {
         const response = await api.get("/logs/current", {
             headers: {

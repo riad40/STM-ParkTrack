@@ -1,24 +1,28 @@
 import { useEffect, useState } from "react"
 import getCurrentGarageState from "../../services/logs/getCurrentGarageState"
 import { Loading } from "../"
-import getOneLog from "../../services/logs/getOneLog"
+import { CarLog } from "../../@types"
+import useAuth from "../../hooks/useAuth"
 
 const ParkingLot = () => {
-    const [garageState, setGarageState] = useState<any>([])
+    const [garageState, setGarageState] = useState<CarLog[]>([])
     const [loading, setLoading] = useState<boolean>(true)
+
+    const { auth } = useAuth()
 
     useEffect(() => {
         const fetchGarageState = async () => {
-            const response = await getCurrentGarageState()
+            const response = await getCurrentGarageState(auth?.token || "")
             setGarageState(response)
             setLoading(false)
         }
         fetchGarageState()
     }, [])
 
+    console.log(garageState)
+
     const capacity = 50
     const filled = garageState.length
-
     const emptySpots = Array(capacity - filled).fill(null)
     const filledSpots = Array(filled).fill(null)
 

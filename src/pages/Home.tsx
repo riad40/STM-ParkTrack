@@ -1,7 +1,13 @@
 import { Header } from "../components"
 import { Link } from "react-router-dom"
+import useAuth from "../hooks/useAuth"
+import { Navigate } from "react-router-dom"
 
 const Home = (): JSX.Element => {
+    const { auth } = useAuth()
+
+    if (auth?.token) return <Navigate to="/dashboard" />
+
     return (
         <div>
             <Header />
