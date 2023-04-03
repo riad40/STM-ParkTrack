@@ -44,7 +44,11 @@ The `src` folder contains all of the app's logic:
 
 ## Getting Started
 
-Before running the app, you'll need to have Node.js and MongoDB installed on your machine. You'll also need to clone the repository and run the backend API server, The full guide is [here](https://github.com/riad40/stm-parktrack-api#readme).
+Before running the app, you'll need to have Node.js and MongoDB installed on your machine. You'll also need to clone the repository and run the backend API server, The full guide is [here](https://github.com/riad40/stm-parktrack-api#readme). you'll also need to create a `.env` file in the root directory and paste in this code below.
+
+```bash
+REACT_APP_API_URL= // probably something like that: http://localhost:5000/api
+```
 
 1. Clone the repo
 
